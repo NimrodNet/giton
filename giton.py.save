@@ -1,0 +1,36 @@
+import os
+
+os.system("git init")
+
+opis = """ 
+
+Witaj w programie Giton. Jest to narzędzie, które pomaga w pracy 
+z programem Git. Zaczynamy 
+
+"""
+
+print(opis)
+
+opis_opcji = """ 
+
+Wybierz jedną z opcji:
+1. Inicjacja.
+2. Dodaj.
+3. Opis.
+4. Zdalnie.
+5. Wrzuć
+6. Pomoc.
+7. Wyjdź.
+"""
+
+numer_opcji = int("0")
+w_petli = True
+
+while numer_opcji >= 0 & w_petli == True:
+    print(opis_opcji)
+    numer_opcji = input("Opcja: ")
+    opcja = int(numer_opcji)
+
+    if opcja ==
+ 7:
+        w_petli = False
