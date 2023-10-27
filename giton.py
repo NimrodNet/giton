@@ -19,33 +19,19 @@ def wykonaj(komenda):
     polecenie = Polecenie()
     polecenie.wykonaj(komenda)
 
-class Komendy_ustawien_git:
-
-    def __init__(self):
-        self.ustawienia = """git config --global"""
-    
-    def ustawienia(self):
-        return self.ustawienia
-
-    def uzytkownik(cls):
-        return """user.name"""
-
-    def email(cls):
-        return """user.email"""
-
-    def edytor(cls):
-        return """code.editor"""
-
 class Komendy_wyswietlania_git:
-
-    def __init__(self):
-        self.ustawienia = Komendy_ustawien_git()
 
     def ustawienia(self):
         return self.ustawienia
 
     def uzytkownik(self):
         return """git config --global user.name"""
+
+    def email(self):
+        return """git config --global user.email"""
+
+    def edytor(self):
+        return """git config -- global core.editor"""
 
 class Komendy_konfiguracji_git:
 
@@ -56,10 +42,16 @@ class Komendy_konfiguracji_git:
         return self.konfiguruj + """user.name '""" + nazwa + """' """
 
     def email(self, nazwa):
-        return self.konfiguruj + """user.email """ + nazwa
+        return zwroc_konfiguracje()
+        return self.konfiguruj + """user.email '""" + nazwa + """' """
 
     def edytor(self, nazwa):
-        return self.konfiguruj + """code.editor """ + nazwa
+        return self.konfiguruj + """code.editor '""" + nazwa + """' """
+
+    def zwroc_konfiguracje(self, opcje):
+        opcja = opcje[0]
+        nazwa = opcje[1]
+        return self.konfiguruj + """ + opcja + '""" + nazwa + """' """
 
 class Komendy_git:
 
@@ -104,6 +96,12 @@ class Komendy_git:
     def pokaz_uzytkownika(self):
         return self.komendy_wyswietlania.uzytkownik()
 
+    def pokaz_email(self):
+        return self.komendy_wyswietlania.email()
+
+    def pokaz_edytor(self):
+        return self.komendy_wyswietlania.edytor()
+
 class Git:
 
     def __init__(self):
@@ -139,6 +137,12 @@ class Git:
     def pokaz_uzytkownika(self):
         wykonaj(self.komenda.pokaz_uzytkownika())
 
+    def pokaz_email(self):
+        wykonaj(self.komenda.pokaz_email())
+
+    def pokaz_edytor(self):
+        wykonaj(self.komenda.pokaz_edytor())
+
     def klonuj(self, link):
         wykonaj(self.komenda.klonuj(link))
 
@@ -152,13 +156,13 @@ stworz_program = Stworz_program()
 
 git = stworz_program.git()
 
-class Inicjacja:
+class Wczytanie:
 
-    def inicjuj(cls):
+    def wczytaj(cls):
         git.inicjuj()
-        git.dodaj_i_opisz('Inicjacja repozytorium')
-        link = input("Podaj link do repozytorium: ")
-        git.podlacz(link)
+        git.dodaj()
+        opis = input("Podaj opis: ")
+        git.opisz(opis)
         git.wczytaj()
 
 opis_programu = Opis_Programu()
@@ -180,18 +184,19 @@ class Ekran_glowny:
     def wybierz(self):
         ekrany = (Ekran_konfiguracji(), Ekran_dzialania(), Ekran_ustawien())
         numer_opcji = int("1")
+        ekran = "null"
         while(numer_opcji >= 0):
             self.wyswietl()
             opcja = input("Opcja: ")
             numer_opcji = int(opcja)
 
             if numer_opcji == 1:
-                ekran_konfiguracji = ekrany[0]
-                ekran_konfiguracji.wyswietl()
+                ekran = ekrany[0]
+                ekran.wyswietl()
             
             if numer_opcji == 2:
-                ekran_dzialania = ekrany[1]
-                ekran_dzialania.wyswietl()
+                ekran = ekrany[1]
+                ekran.wyswietl()
 
             if numer_opcji == 3:
                 ekran = ekrany[2]
@@ -289,7 +294,9 @@ class Ekran_ustawien:
     def __init__(self):
         self.opis_opcji = """Wyświetl ustawienia:
 1. Nazwa użytkownika.
-2. Wróć."""
+2. Adres e-mail.
+3. Edytor.
+4. Wróć."""
 
     def wyswietl(self):
         numer_opcji = int("0")
@@ -303,6 +310,12 @@ class Ekran_ustawien:
                 git.pokaz_uzytkownika()
 
             if numer_opcji == 2:
+                git.pokaz_email()
+
+            if numer_opcji == 3:
+                git.pokaz_edytor()
+
+            if numer_opcji == 4:
                 numer_opcji = -1
 
 ekran = Ekran_glowny()
